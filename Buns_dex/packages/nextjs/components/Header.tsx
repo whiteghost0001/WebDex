@@ -39,11 +39,6 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/events",
     icon: <BoltIcon className="h-4 w-4" />,
   },
-  {
-    label: "Debug Contracts",
-    href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
-  },
 ];
 
 export const HeaderMenuLinks = () => {
@@ -88,7 +83,7 @@ export const Header = () => {
 
   useOutsideClick(
     burgerMenuRef,
-    useCallback(() => setIsDrawerOpen(false), []),
+    useCallback(() => setIsDrawerOpen(false), [])
   );
 
   const { targetNetwork } = useTargetNetwork();
@@ -172,8 +167,8 @@ export const Header = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-Stark</span>
-            <span className="text-xs">Starknet dev stack</span>
+            <span className="font-bold leading-tight">BunsSwap</span>
+            <span className="text-xs">DEX on Starknet</span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
