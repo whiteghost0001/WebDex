@@ -1,0 +1,7 @@
+scripts-ts/helpers/** merge=theirs
+scripts-ts/deploy-contract.ts merge=theirs
+.env.example merge=theirs
+contracts/Scarb.lock merge=theirs
+
+contracts/** merge=ours
+scripts-ts/deploy.ts merge=ours

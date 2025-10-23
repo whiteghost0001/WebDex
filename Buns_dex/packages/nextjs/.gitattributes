@@ -1,0 +1,16 @@
+supportedChains.ts merge=theirs
+app/configure/** merge=theirs
+app/debug/** merge=theirs
+components/** merge=theirs
+contracts/** merge=theirs
+hooks/** merge=theirs
+services/** merge=theirs
+utils/** merge=theirs
+types/** merge=theirs
+public/manifest.json merge=theirs
+.gitattributes merge=theirs
+
+app/page.tsx merge=ours
+components/Header.tsx merge=ours
+
+styles/globals.css merge=union
