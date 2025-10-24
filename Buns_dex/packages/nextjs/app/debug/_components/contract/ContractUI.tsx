@@ -81,10 +81,12 @@ export const ContractUI = ({
               <div className="flex flex-col gap-1">
                 <span className="font-bold">{contractName}</span>
                 <Address address={deployedContractData.address} />
-                <ClassHash
-                  classHash={deployedContractData.classHash}
-                  size="xs"
-                />
+                {(deployedContractData as any).classHash && (
+                  <ClassHash
+                    classHash={(deployedContractData as any).classHash}
+                    size="xs"
+                  />
+                )}
                 <div className="flex gap-1 items-center h-5">
                   <span className="font-bold text-sm">Balance:</span>
                   <Balance

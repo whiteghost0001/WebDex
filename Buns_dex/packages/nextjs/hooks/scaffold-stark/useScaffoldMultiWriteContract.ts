@@ -8,13 +8,12 @@ import {
   UseScaffoldArgsParam,
   UseScaffoldWriteConfig,
 } from "~~/utils/scaffold-stark/contract";
-import { useSendTransaction, useNetwork, Abi } from "@starknet-react/core";
+import { useNetwork, Abi } from "@starknet-react/core";
 import {
   Contract as StarknetJsContract,
   InvocationsDetails,
   Call,
 } from "starknet";
-import { notification } from "~~/utils/scaffold-stark";
 import { useTransactor } from "./useTransactor";
 
 function isRawCall(value: Call | any): value is Call {
@@ -47,19 +46,22 @@ export const useScaffoldMultiWriteContract = <
   >,
 >({
   calls,
-  options,
 }: {
-  calls: Array<
+  calls?: Array<
     UseScaffoldWriteConfig<TAbi, TContractName, TFunctionName> | Call
   >;
   options?: InvocationsDetails;
-}) => {
+} = {}) => {
   const { targetNetwork } = useTargetNetwork();
   const { chain } = useNetwork();
   const { writeTransaction: sendTxnWrapper, sendTransactionInstance } =
     useTransactor();
 
-  const sendContractWriteTx = async () => {
+  const sendContractWriteTx = async (params?: {
+    calls?: Array<
+      UseScaffoldWriteConfig<TAbi, TContractName, TFunctionName> | Call
+    >;
+  }) => {
     if (!chain?.id) {
       console.error("Please connect your wallet");
       return;
@@ -70,11 +72,14 @@ export const useScaffoldMultiWriteContract = <
     }
 
     try {
+      // Use provided calls or fallback to hook calls
+      const callsToUse = params?.calls || calls;
+
       // we just parse calldata here so that it will only parse on demand.
       // use IIFE pattern
       const parsedCalls = (() => {
-        if (calls) {
-          return calls.map((call) => {
+        if (callsToUse) {
+          return callsToUse.map((call) => {
             if (isRawCall(call)) {
               return call;
             }
@@ -87,12 +92,12 @@ export const useScaffoldMultiWriteContract = <
             // we convert to starknetjs contract instance here since deployed data may be undefined if contract is not deployed
             const contractInstance = new StarknetJsContract(
               contract.abi,
-              contract.address,
+              contract.address
             );
 
             return contractInstance.populate(
               functionName,
-              unParsedArgs as any[],
+              unParsedArgs as any[]
             );
           });
         } else {
@@ -122,7 +127,7 @@ export function createContractCall<
 >(
   contractName: TContractName,
   functionName: TFunctionName,
-  args: UseScaffoldArgsParam<TAbi, TContractName, TFunctionName>["args"],
+  args: UseScaffoldArgsParam<TAbi, TContractName, TFunctionName>["args"]
 ) {
   return { contractName, functionName, args };
 }
